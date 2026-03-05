@@ -40,8 +40,8 @@ const renderLevelWords = words => {
           <h2 class="font-bangla font-semibold text-3xl text-base-content/70">"${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি"} / ${word.pronunciation ? word.pronunciation : "উচ্চারণ পাওয়া যায়নি"}"</h2>
         </div>
         <div class="flex justify-between mt-10">
-          <div class="bg-info/20 hover:bg-sky-300 w-12 h-12 flex justify-center items-center rounded"><i class="fa-solid fa-circle-info"></i></div>
-          <div class="bg-info/20 hover:bg-sky-300 w-12 h-12 flex justify-center items-center rounded"><i class="fa-solid fa-volume-high"></i></div>
+          <button onclick="loadWordDetail(${word.id})" class="bg-info/20 hover:bg-sky-300 w-12 h-12 flex justify-center items-center rounded"><i class="fa-solid fa-circle-info"></i></button>
+          <button class="bg-info/20 hover:bg-sky-300 w-12 h-12 flex justify-center items-center rounded"><i class="fa-solid fa-volume-high"></i></button>
         </div>
     `
     wordContainer.append(card);
@@ -63,10 +63,43 @@ const renderLesson = (lessons) => {
     levelContainer.appendChild(btnDiv);
   }) 
 }
-
 const removeActive = () => {
   const allBtn = document.querySelectorAll(".lesson-btn")
     allBtn.forEach(remove => {
       remove.classList.add("btn-outline")
     })
+}
+
+const loadWordDetail = async (id) => {
+  const url = `https://openapi.programming-hero.com/api/word/${id}`;
+  const res = await fetch(url);
+  const details = await res.json();
+  renderDetailsWord(details.data);
+}
+
+const renderDetailsWord = (word) => {
+  console.log(word)
+  const detailContainer = document.getElementById("details-container");
+  console.log(detailContainer)
+  detailContainer.innerHTML = `
+    <div>
+        <h2 class="text-2xl">${word.word}<span>(<i class="fa-solid fa-microphone-lines"></i> : ${word.pronunciation})</span></h2>
+      </div>
+      <div>
+        <h2 class="font-bold">Meaning</h2>
+        <p>${word.meaning}</p>
+      </div>
+      <div>
+        <h2 class="font-bold">Example</h2>
+        <p>${word.sentence}</p>
+      </div>
+      <div class="">
+        <h2 class="font-bold">Example</h2>
+        <span class="btn">lorem</span>
+        <span class="btn">lorem</span>
+        <span class="btn">lorem</span>
+      </div>
+  
+  `;
+  document.getElementById("word_modal").showModal();
 }
