@@ -10,6 +10,9 @@ const loadLevelWord = id => {
   fetch(url)
   .then(res => res.json())
   .then(data => {
+    removeActive()
+    const selectedBtn = document.getElementById(`lesson-btn-${id}`);
+    selectedBtn.classList.remove("btn-outline")
     renderLevelWords(data.data)
   })
 };
@@ -36,9 +39,9 @@ const renderLevelWords = words => {
           <p class="font-extralight text-xl">Meaning /Pronounciation </p>
           <h2 class="font-bangla font-semibold text-3xl text-base-content/70">"${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি"} / ${word.pronunciation ? word.pronunciation : "উচ্চারণ পাওয়া যায়নি"}"</h2>
         </div>
-        <div class="flex justify-between">
-          <div class="bg-info/20 hover:bg-info w-12 h-12 flex justify-center items-center rounded"><i class="fa-solid fa-circle-info"></i></div>
-          <div class="bg-info/20 hover:bg-info w-12 h-12 flex justify-center items-center rounded"><i class="fa-solid fa-volume-high"></i></div>
+        <div class="flex justify-between mt-10">
+          <div class="bg-info/20 hover:bg-sky-300 w-12 h-12 flex justify-center items-center rounded"><i class="fa-solid fa-circle-info"></i></div>
+          <div class="bg-info/20 hover:bg-sky-300 w-12 h-12 flex justify-center items-center rounded"><i class="fa-solid fa-volume-high"></i></div>
         </div>
     `
     wordContainer.append(card);
@@ -52,13 +55,18 @@ const renderLesson = (lessons) => {
   // 2. get into every lesson
   lessons.forEach((lesson) => {
     // 3. create Element
-    console.log(lesson);
     const btnDiv = document.createElement("div");
     btnDiv.innerHTML = `
-          <button id="lesson-btn-${lesson.level_no}" onclick="loadLevelWord(${lesson.level_no})" class="btn btn-outline btn-primary" ><i class="fa-solid fa-book-open"></i><span>Lesson - ${lesson.level_no}</span></button>    
+          <button id="lesson-btn-${lesson.level_no}" onclick="loadLevelWord(${lesson.level_no})" class="btn btn-outline btn-primary lesson-btn" ><i class="fa-solid fa-book-open"></i><span>Lesson - ${lesson.level_no}</span></button>    
     `
     // 4. append into the container
     levelContainer.appendChild(btnDiv);
-  })
-  
+  }) 
+}
+
+const removeActive = () => {
+  const allBtn = document.querySelectorAll(".lesson-btn")
+    allBtn.forEach(remove => {
+      remove.classList.add("btn-outline")
+    })
 }
