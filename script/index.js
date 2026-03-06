@@ -1,3 +1,8 @@
+
+const createElements = (arr) => {
+  const htmlElements = arr.map(el => `<span class="btn">${el}</span>`);
+  return (htmlElements.join(" "))
+};
 const loadLessons = () => {
   fetch("https://openapi.programming-hero.com/api/levels/all") //promise of response 
   .then(res => res.json()) //promise of json data
@@ -87,19 +92,17 @@ const renderDetailsWord = (word) => {
       </div>
       <div>
         <h2 class="font-bold">Meaning</h2>
-        <p>${word.meaning}</p>
+        <p>${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি"}</p>
       </div>
       <div>
         <h2 class="font-bold">Example</h2>
         <p>${word.sentence}</p>
       </div>
       <div class="">
-        <h2 class="font-bold">Example</h2>
-        <span class="btn">lorem</span>
-        <span class="btn">lorem</span>
-        <span class="btn">lorem</span>
+        <h2 class="font-bold">Synonym</h2>
+        <div>${createElements(word.synonyms)}</div>
       </div>
-  
   `;
+  console.log(createElements(word.synonyms));
   document.getElementById("word_modal").showModal();
 }
